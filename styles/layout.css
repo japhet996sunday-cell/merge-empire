@@ -1,1 +1,117 @@
+/**
+ * layout.css
+ * ---------------------------------------------------------------------------
+ * RESPONSIBILITY
+ *   Structural positioning of the app shell: root container, HUD dock,
+ *   grid layout, bottom navigation, screen containers. This file answers
+ *   "where things sit," not "what they look like" (that's components.css).
+ *   Kept separate so a full re-skin (components.css/themes.css) never
+ *   requires touching layout math, and vice versa.
+ * ---------------------------------------------------------------------------
+ */
 
+.app-root {
+  position: relative;
+  max-width: var(--app-max-width);
+  margin-inline: auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--safe-area-top);
+  padding-bottom: var(--safe-area-bottom);
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+/* ---- Screens ---------------------------------------------------------- */
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+.screen--main {
+  padding-top: 0;
+  gap: var(--space-4);
+}
+
+/* ---- Grid --------------------------------------------------------------- */
+.grid-view {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 6), 1fr);
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.grid-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border-subtle);
+  transition: transform var(--duration-fast) var(--ease-standard),
+              background var(--duration-fast) var(--ease-standard);
+}
+
+.grid-cell.has-item {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.grid-cell.is-selected {
+  border-color: var(--color-accent-gold);
+  background: rgba(244, 183, 64, 0.14);
+}
+
+.grid-cell-icon {
+  font-size: clamp(1.25rem, 6vw, 2rem);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.grid-cell-tier {
+  position: absolute;
+  bottom: 3px;
+  right: 5px;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+/* ---- Bottom navigation ----------------------------------------------------
+   Static flex child of .app-root (mounted via #bottom-nav-root in main.js),
+   not position:fixed — the app shell itself is a constrained-width flex
+   column, so a fixed nav would need its own max-width/centering logic
+   duplicated here. Letting it flow naturally as the last flex child keeps
+   it perfectly aligned with the rest of the shell for free. */
+.bottom-nav {
+  flex-shrink: 0;
+  height: var(--bottom-nav-height);
+  padding-bottom: var(--safe-area-bottom);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--color-bg-elevated);
+  border-top: 1px solid var(--color-border-subtle);
+  z-index: 20;
+}
+
+/* ---- List layouts (upgrades / achievements / missions) ---------------------- */
+.upgrade-list,
+.achievement-list,
+.mission-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  }
