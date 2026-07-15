@@ -1,1 +1,271 @@
+/**
+ * components.css
+ * ---------------------------------------------------------------------------
+ * RESPONSIBILITY
+ *   Visual styling for reusable components (Button.js, Modal.js, Toast.js
+ *   outputs, plus card-style rows for upgrades/achievements/missions).
+ *   Structural placement lives in layout.css; this file is purely "what
+ *   does this component look like," matched 1:1 to the class names each
+ *   component factory in src/ui/components/ actually emits.
+ * ---------------------------------------------------------------------------
+ */
 
+/* ---- Buttons ------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  transition: transform var(--duration-fast) var(--ease-standard),
+              opacity var(--duration-fast) var(--ease-standard);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn--primary {
+  background: var(--color-accent-gold);
+  color: var(--color-text-on-gold);
+}
+
+.btn--secondary {
+  background: var(--color-bg-card);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-strong);
+}
+
+.btn--danger {
+  background: var(--color-accent-coral);
+  color: var(--color-text-on-gold);
+}
+
+.btn:disabled,
+.btn.is-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn--cost {
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-strong);
+  min-width: 96px;
+}
+
+.btn-cost-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.btn-cost-value {
+  font-size: var(--font-size-md);
+  color: var(--color-accent-gold);
+}
+
+/* ---- Card rows (upgrades / achievements / missions) ----------------------- */
+.upgrade-row,
+.achievement-row,
+.mission-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.upgrade-row-info,
+.achievement-row-info,
+.mission-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.upgrade-row-title,
+.achievement-row-title,
+.mission-row-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.upgrade-row-description,
+.achievement-row-description,
+.mission-row-description {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.upgrade-level {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-accent-gold);
+  margin-top: var(--space-1);
+}
+
+.achievement-row-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.achievement-row-progress-label,
+.mission-row-progress-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-top: var(--space-1);
+}
+
+.mission-empty-state {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+.mission-row.is-complete {
+  border-color: var(--color-accent-jade);
+}
+
+.screen-subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.achievement-row.is-unlocked {
+  border-color: var(--color-accent-jade);
+}
+
+.achievement-row.is-locked {
+  opacity: 0.6;
+}
+
+.progress-bar {
+  position: relative;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  position: absolute;
+  inset: 0;
+  width: var(--progress, 0%);
+  background: var(--color-accent-jade);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-standard) var(--ease-standard);
+}
+
+/* ---- Modal --------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: rgba(10, 8, 20, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  width: 100%;
+  max-width: 360px;
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  border: 1px solid var(--color-border-strong);
+}
+
+.modal-title {
+  margin-bottom: var(--space-4);
+}
+
+.modal-body {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+/* ---- Toast --------------------------------------------------------------- */
+.toast-container {
+  position: fixed;
+  top: calc(var(--hud-height) + var(--space-3) + var(--safe-area-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(90vw, 360px);
+}
+
+.toast {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  box-shadow: var(--shadow-card);
+}
+
+.toast--info    { background: var(--color-bg-card); color: var(--color-text-primary); }
+.toast--success { background: var(--color-accent-jade); color: var(--color-text-on-gold); }
+.toast--warning { background: var(--color-accent-gold); color: var(--color-text-on-gold); }
+.toast--error   { background: var(--color-accent-coral); color: var(--color-text-on-gold); }
+
+/* ---- Floating text (merge currency pop) ------------------------------------ */
+.floating-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ---- Audio unlock gate ------------------------------------------------------ */
+.audio-unlock-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+  }
