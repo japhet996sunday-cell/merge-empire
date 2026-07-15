@@ -1,1 +1,53 @@
+/**
+ * themes.css
+ * ---------------------------------------------------------------------------
+ * RESPONSIBILITY
+ *   Overrides the color custom properties from base.css for alternate
+ *   themes. The default (unthemed) values in base.css ARE the dark theme —
+ *   this file adds a light theme and the `system` auto-detection hook.
+ *   state.settings.theme ('light' | 'dark' | 'system') is applied by
+ *   toggling a `data-theme` attribute on <body> (wired in SettingsScreen /
+ *   main.js boot); this file only needs to know the attribute contract,
+ *   not how it gets set.
+ *
+ * WHY OVERRIDE CUSTOM PROPERTIES RATHER THAN DUPLICATE RULES
+ *   Every component/layout rule already references var(--color-*). A theme
+ *   swap is therefore just re-pointing those variables here — zero changes
+ *   needed anywhere else in the CSS or in component code.
+ * ---------------------------------------------------------------------------
+ */
 
+[data-theme='light'] {
+  --color-bg: #F7F4EC;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-card: #FDFBF6;
+  --color-surface-parchment: #FFFFFF;
+  --color-border-subtle: rgba(22, 20, 37, 0.08);
+  --color-border-strong: rgba(22, 20, 37, 0.16);
+
+  --color-text-primary: #1F1C33;
+  --color-text-secondary: rgba(31, 28, 51, 0.68);
+  --color-text-muted: rgba(31, 28, 51, 0.44);
+
+  --shadow-card: 0 4px 16px rgba(31, 28, 51, 0.10);
+  --shadow-modal: 0 12px 40px rgba(31, 28, 51, 0.18);
+}
+
+/* System preference fallback: only applies if no explicit theme is set. */
+@media (prefers-color-scheme: light) {
+  [data-theme='system'] {
+    --color-bg: #F7F4EC;
+    --color-bg-elevated: #FFFFFF;
+    --color-bg-card: #FDFBF6;
+    --color-surface-parchment: #FFFFFF;
+    --color-border-subtle: rgba(22, 20, 37, 0.08);
+    --color-border-strong: rgba(22, 20, 37, 0.16);
+
+    --color-text-primary: #1F1C33;
+    --color-text-secondary: rgba(31, 28, 51, 0.68);
+    --color-text-muted: rgba(31, 28, 51, 0.44);
+
+    --shadow-card: 0 4px 16px rgba(31, 28, 51, 0.10);
+    --shadow-modal: 0 12px 40px rgba(31, 28, 51, 0.18);
+  }
+    }
