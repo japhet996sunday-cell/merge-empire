@@ -1,1 +1,299 @@
+/**
+ * shell.css
+ * ---------------------------------------------------------------------------
+ * RESPONSIBILITY
+ *   Visual styling for the app-shell pieces composed directly in main.js:
+ *   HeaderBar, CurrencyBar, BottomNav, LoadingScreen, SettingsModal, and
+ *   AnimationController's achievement banner. Kept separate from
+ *   components.css (which covers reusable primitives like Button/Modal/
+ *   Toast) since these are structural, one-off shell pieces rather than
+ *   general-purpose components reused across many contexts.
+ * ---------------------------------------------------------------------------
+ */
 
+/* ---- Loading screen -------------------------------------------------------- */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  background: var(--color-bg);
+  padding: var(--space-5);
+}
+
+.loading-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.loading-logo-icon {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.loading-logo-text {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-primary);
+}
+
+.loading-progress-track {
+  width: min(240px, 70vw);
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.loading-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--color-accent-gold);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-standard) var(--ease-standard);
+}
+
+.loading-status-label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* ---- Header bar -------------------------------------------------------------- */
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+}
+
+.header-bar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.header-bar-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.header-bar-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+.header-bar-rate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  background: rgba(62, 207, 142, 0.14);
+  border: 1px solid rgba(62, 207, 142, 0.3);
+}
+
+.header-bar-rate-icon {
+  font-size: 0.9rem;
+}
+
+.header-bar-rate-value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--font-size-xs);
+  color: var(--color-accent-jade);
+}
+
+/* ---- Currency bar -------------------------------------------------------------- */
+.currency-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: var(--hud-height);
+  padding-inline: var(--space-4);
+  background: var(--color-bg-elevated);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.currency-bar-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.currency-bar-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.currency-bar-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+/* ---- Bottom navigation ----------------------------------------------------------- */
+.nav-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 1;
+  height: 100%;
+  color: var(--color-text-muted);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.nav-btn.is-active {
+  color: var(--color-accent-gold);
+}
+
+.nav-btn-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.nav-btn-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+
+.nav-badge {
+  position: absolute;
+  top: 2px;
+  right: calc(50% - 18px);
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent-coral);
+}
+
+/* ---- Achievement celebration banner ------------------------------------------------ */
+.achievement-banner {
+  position: fixed;
+  top: calc(var(--space-4) + var(--safe-area-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: linear-gradient(135deg, var(--color-accent-gold), var(--color-accent-gold-dim));
+  color: var(--color-text-on-gold);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+}
+
+.achievement-banner-icon {
+  font-size: 1.1rem;
+}
+
+/* ---- Settings modal ------------------------------------------------------------- */
+.settings-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.settings-row--toggle {
+  align-items: center;
+}
+
+.settings-row-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  flex-shrink: 0;
+}
+
+.settings-row-control {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.settings-row-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  min-width: 2.5em;
+  text-align: right;
+}
+
+.settings-slider {
+  flex: 1;
+  max-width: 140px;
+  accent-color: var(--color-accent-gold);
+}
+
+.settings-checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-accent-gold);
+}
+
+.theme-option-group {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.theme-option-btn {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.theme-option-btn.is-active {
+  background: var(--color-accent-gold);
+  color: var(--color-text-on-gold);
+  border-color: var(--color-accent-gold);
+}
+
+.welcome-back-line {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-accent-jade);
+  padding: var(--space-1) 0;
+}
+
+/* ---- Screen root wrapper (owned exclusively by UIManager) ------------------------- */
+.screen-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
