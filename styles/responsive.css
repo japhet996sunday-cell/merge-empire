@@ -1,1 +1,83 @@
+/**
+ * responsive.css
+ * ---------------------------------------------------------------------------
+ * RESPONSIBILITY
+ *   Breakpoint-driven overrides. Loaded last in index.html deliberately so
+ *   it always wins the cascade over layout.css/components.css without
+ *   needing !important anywhere.
+ *
+ * STRATEGY
+ *   The base layout (defined in layout.css) IS the mobile layout — this is
+ *   a mobile-first merge game, per the Claude mobile app context this was
+ *   built in. Breakpoints here only ADD enhancements for larger viewports
+ *   (a centered phone-width "device frame" on desktop, larger touch
+ *   targets are unnecessary on desktop pointer input, etc.) rather than
+ *   restructuring anything.
+ *
+ * BREAKPOINTS
+ *   Mobile:  0–599px   (default, no media query needed)
+ *   Tablet:  600–1023px
+ *   Desktop: 1024px+
+ * ---------------------------------------------------------------------------
+ */
 
+/* ---- Tablet and up: give the grid more breathing room ---------------------- */
+@media (min-width: 600px) {
+  :root {
+    --app-max-width: 560px;
+  }
+
+  .screen {
+    padding: var(--space-6);
+    padding-bottom: calc(var(--bottom-nav-height) + var(--space-6));
+  }
+
+  .grid-view {
+    padding: var(--space-4);
+  }
+}
+
+/* ---- Desktop: frame the phone-width app like a device, avoid a stretched
+   full-bleed layout that would look broken at 1440px+ ------------------------ */
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-elevated);
+  }
+
+  .app-root {
+    min-height: min(900px, 96dvh);
+    height: 96dvh;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-modal);
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .bottom-nav {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+
+  /* Pointer input can support tighter targets than touch. */
+  .grid-cell {
+    cursor: pointer;
+  }
+
+  .grid-cell:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
+/* ---- Short viewports (landscape phones): shrink the HUD, keep grid usable --- */
+@media (max-height: 480px) and (orientation: landscape) {
+  :root {
+    --hud-height: 48px;
+    --bottom-nav-height: 56px;
+  }
+
+  .screen--main {
+    flex-direction: row;
+    gap: var(--space-3);
+  }
+    }
