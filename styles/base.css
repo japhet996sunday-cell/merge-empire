@@ -1,1 +1,155 @@
+/**
+ * base.css
+ * ---------------------------------------------------------------------------
+ * RESPONSIBILITY
+ *   Design tokens (custom properties), CSS reset, and base typography.
+ *   Every other stylesheet consumes the custom properties defined here —
+ *   no color, spacing, or font value should be hardcoded anywhere else in
+ *   the codebase. This is what lets the whole game get re-themed (e.g. a
+ *   seasonal event skin) by editing one file.
+ *
+ * DESIGN DIRECTION
+ *   "Playful abundance" — a merge/idle tycoon lives or dies on how
+ *   satisfying its numbers and pops feel. Deep indigo-plum base (not flat
+ *   black) keeps warmth; gold/jade/coral read instantly as currency/
+ *   growth/danger without needing icons to disambiguate. Rounded-geometric
+ *   display type (Baloo 2) gives the number-heavy UI personality instead
+ *   of reading as a spreadsheet.
+ * ---------------------------------------------------------------------------
+ */
 
+@font-face {
+  font-family: 'Baloo 2';
+  src: local('Baloo 2');
+  font-weight: 400 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+:root {
+  /* ---- Color: surfaces ---------------------------------------------- */
+  --color-bg: #161425;
+  --color-bg-elevated: #1F1C33;
+  --color-bg-card: #262242;
+  --color-surface-parchment: #FBF7EE;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  /* ---- Color: brand / semantic --------------------------------------- */
+  --color-accent-gold: #F4B740;      /* primary currency, CTAs */
+  --color-accent-gold-dim: #B8862A;
+  --color-accent-jade: #3ECF8E;      /* growth, success, unlocks */
+  --color-accent-coral: #FF6B5E;     /* warnings, spend, errors */
+  --color-accent-violet: #9C8CFF;    /* gems / premium currency */
+
+  /* ---- Color: text ---------------------------------------------------- */
+  --color-text-primary: #F5F3FA;
+  --color-text-secondary: rgba(245, 243, 250, 0.68);
+  --color-text-muted: rgba(245, 243, 250, 0.44);
+  --color-text-on-gold: #2B1D00;
+
+  /* ---- Typography ------------------------------------------------------ */
+  --font-display: 'Baloo 2', ui-rounded, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+  --font-size-2xl: 2.5rem;
+
+  /* ---- Spacing scale (4px base) ----------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  /* ---- Radius / elevation ------------------------------------------------ */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-full: 999px;
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.28);
+  --shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.45);
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 120ms;
+  --duration-standard: 220ms;
+  --duration-slow: 400ms;
+
+  /* ---- Layout ------------------------------------------------------------ */
+  --app-max-width: 480px;
+  --hud-height: 64px;
+  --bottom-nav-height: 72px;
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ---- Reset --------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  height: 100%;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+h1 { font-size: var(--font-size-xl); }
+h2 { font-size: var(--font-size-lg); }
+
+button, input {
+  font-family: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+ul, ol { list-style: none; }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+
+/* Visible keyboard focus everywhere — never remove outline without replacing it. */
+:focus-visible {
+  outline: 2px solid var(--color-accent-gold);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+    }
