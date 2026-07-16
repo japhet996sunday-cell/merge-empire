@@ -99,7 +99,7 @@ export const UpgradeSystem = {
     if (!def) return 1;
 
     const level = Selectors.getUpgradeLevel(state, upgradeId);
-    if (level === 0) return def.effectType === 'currencyMultiplier' ? 1 : 0;
+    if (level === 0) return this._identityValueFor(def.effectType);
 
     switch (def.effectType) {
       case 'currencyMultiplier':
@@ -112,6 +112,32 @@ export const UpgradeSystem = {
         return level * def.effectParams.extraRowsPerLevel;
       default:
         return level;
+    }
+  },
+
+  /**
+   * The "no upgrade purchased yet" value for each effect type. This is NOT
+   * uniformly 0 — effects that are consumed as MULTIPLIERS (currencyMultiplier,
+   * spawnRateBoost) must default to 1 (identity for multiplication), while
+   * effects consumed as raw ADDITIVE magnitudes (offlineEfficiencyBoost,
+   * gridExpansion) correctly default to 0 (identity for addition).
+   *
+   * Getting this wrong for a multiplier-type effect is a severe bug: e.g.
+   * spawnRateBoost feeding into `baseInterval * effectValue` would produce
+   * an interval of 0 at level 0, causing spawns every single tick instead
+   * of never being boosted. (This exact bug shipped and was fixed — see
+   * CHANGELOG-worthy note in git history / commit message.)
+   */
+  _identityValueFor(effectType) {
+    switch (effectType) {
+      case 'currencyMultiplier':
+      case 'spawnRateBoost':
+        return 1; // identity for multiplication — "no change" to the base value
+      case 'offlineEfficiencyBoost':
+      case 'gridExpansion':
+        return 0; // identity for addition — "no bonus" on top of the base value
+      default:
+        return 1;
     }
   },
 
