@@ -265,11 +265,47 @@
   justify-content: center;
   background: var(--color-bg);
   color: var(--color-text-primary);
-  font-family: var(--font-display);
-  font-size: var(--font-size-lg);
   cursor: pointer;
 }
 
 .audio-unlock-gate[hidden] {
   display: none;
+}
+
+.audio-unlock-gate-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.audio-unlock-gate-icon {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.audio-unlock-gate-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-xl);
+  color: var(--color-text-primary);
+}
+
+.audio-unlock-gate-cta {
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-gold);
+  color: var(--color-text-on-gold);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  box-shadow: var(--shadow-card);
+  animation: pulse-ready 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-unlock-gate-cta {
+    animation: none;
+  }
   }
