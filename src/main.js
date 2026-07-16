@@ -160,6 +160,10 @@ async function boot() {
   AnimationController.init(ctx);
 
   // --- 9. Audio (gated behind user gesture per browser autoplay policy) --------
+  // The gate's click listener is wired now, but the element itself stays
+  // `hidden` (see index.html) until step 11 reveals it — otherwise it sits
+  // underneath the loading screen the whole time boot is running and
+  // absorbs taps that visually appear to do nothing.
   const audioGateEl = document.getElementById('audio-unlock-gate');
   audioGateEl?.addEventListener(
     'click',
@@ -212,6 +216,10 @@ async function boot() {
   LoadingScreen.setProgress(loadingEl, 1, 'Ready!');
   await new Promise((resolve) => setTimeout(resolve, 200)); // let the bar visibly fill
   await LoadingScreen.hide(loadingEl);
+
+  // Only now does the audio gate become visible/tappable — previously it
+  // sat hidden underneath the loading screen for the whole boot sequence.
+  if (audioGateEl) audioGateEl.hidden = false;
 
   if (window.__pendingWelcomeBack) {
     showWelcomeBackModal(window.__pendingWelcomeBack.earned, window.__pendingWelcomeBack.cappedMs);
