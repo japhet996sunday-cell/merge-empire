@@ -60,6 +60,8 @@ import { Modal } from './ui/components/Modal.js';
 import { h } from './ui/Renderer.js';
 import { NumberFormatter } from './utils/NumberFormatter.js';
 
+alert("main.js loaded");
+
 const DAILY_RESET_CHECK_INTERVAL_MS = 60_000; // check once a minute is plenty
 
 async function boot() {
