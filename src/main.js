@@ -246,6 +246,6 @@ function showWelcomeBackModal(earned, cappedMs) {
 
 document.addEventListener('DOMContentLoaded', () => {
   boot().catch((err) => {
-  console.error(err);
-});
+    Logger.error('main', 'Boot failed:', err);
+  });
 });
