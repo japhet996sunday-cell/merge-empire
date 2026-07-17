@@ -247,6 +247,5 @@ function showWelcomeBackModal(earned, cappedMs) {
 document.addEventListener('DOMContentLoaded', () => {
   boot().catch((err) => {
   console.error(err);
-  alert(err.stack || err.message || err);
 });
 });
