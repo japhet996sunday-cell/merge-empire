@@ -29,7 +29,7 @@ export const GridView = {
   _cellEls: new Map(),        // cellId -> HTMLElement
   _cellIconEls: new Map(),    // cellId -> HTMLElement (icon/emoji span)
   _cellTierEls: new Map(),    // cellId -> HTMLElement (tier badge span)
-  _lastRenderedItemId: new Map(), // cellId -> itemId | null, for change detection
+  _lastRenderedCellState: new Map(), // cellId -> itemId + tier, for change detection
   _ctx: null,
   _selectedCellId: null,
 
@@ -44,7 +44,7 @@ export const GridView = {
     this._cellEls.clear();
     this._cellIconEls.clear();
     this._cellTierEls.clear();
-    this._lastRenderedItemId.clear();
+    this._lastRenderedCellState.clear();
     this._selectedCellId = null;
     this._container?.remove();
     this._container = null;
@@ -59,7 +59,7 @@ export const GridView = {
       this._cellEls.clear();
       this._cellIconEls.clear();
       this._cellTierEls.clear();
-      this._lastRenderedItemId.clear();
+      this._lastRenderedCellState.clear();
       this._renderInitialGrid(state);
       return;
     }
@@ -93,7 +93,7 @@ export const GridView = {
       this._cellEls.set(cellId, cellEl);
       this._cellIconEls.set(cellId, iconEl);
       this._cellTierEls.set(cellId, tierEl);
-      this._lastRenderedItemId.set(cellId, undefined); // force first patch to write
+      this._lastRenderedCellState.set(cellId, undefined); // force first patch to write
       this._container.appendChild(cellEl);
 
       this._patchCell(cell);
@@ -102,11 +102,18 @@ export const GridView = {
 
   /**
    * Writes only the DOM changes needed to reflect `cell`'s current
-   * contents, skipping cells whose itemId hasn't changed since last patch.
+   * contents, skipping cells whose itemId and tier haven't changed since last patch.
    */
   _patchCell(cell) {
     const { cellId, itemId, tier } = cell;
-    if (this._lastRenderedItemId.get(cellId) === itemId) return; // unchanged, skip
+    const renderedState = this._lastRenderedCellState.get(cellId);
+    if (
+      renderedState &&
+      renderedState.itemId === itemId &&
+      renderedState.tier === tier
+    ) {
+      return; // unchanged, skip
+    }
 
     const cellEl = this._cellEls.get(cellId);
     const iconEl = this._cellIconEls.get(cellId);
@@ -126,7 +133,7 @@ export const GridView = {
       toggleClass(cellEl, 'has-item', true);
     }
 
-    this._lastRenderedItemId.set(cellId, itemId);
+    this._lastRenderedCellState.set(cellId, { itemId, tier });
   },
 
   _handleCellClick(cellId) {

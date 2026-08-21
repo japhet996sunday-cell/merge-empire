@@ -25,6 +25,7 @@
 import { EconomySystem } from './EconomySystem.js';
 import { getItemDefinition } from '../data/ItemDefinitions.js';
 import { BalanceConfig } from '../data/BalanceConfig.js';
+import { UpgradeSystem } from './UpgradeSystem.js';
 
 export const ProductionSystem = {
   /**
@@ -41,7 +42,14 @@ export const ProductionSystem = {
       if (!def || !def.producesCurrency) continue;
 
       const tierMultiplier = Math.pow(BalanceConfig.tierValueGrowth, def.tier - 1);
-      const rate = def.baseProductionRate * tierMultiplier;
+      const upgradeMultiplier = UpgradeSystem.getCurrencyMultiplier(
+        state,
+        def.producesCurrency
+      );
+      const rate =
+        def.baseProductionRate *
+        tierMultiplier *
+        upgradeMultiplier;
 
       snapshot[def.producesCurrency] = (snapshot[def.producesCurrency] ?? 0) + rate;
     }
