@@ -72,9 +72,11 @@
 }
 
 .grid-cell-icon {
-  font-size: clamp(1.25rem, 6vw, 2rem);
-  line-height: 1;
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
   pointer-events: none;
+  user-select: none;
 }
 
 .grid-cell-tier {

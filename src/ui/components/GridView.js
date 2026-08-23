@@ -27,7 +27,7 @@ import { getItemDefinition } from '../../data/ItemDefinitions.js';
 export const GridView = {
   _container: null,
   _cellEls: new Map(),        // cellId -> HTMLElement
-  _cellIconEls: new Map(),    // cellId -> HTMLElement (icon/emoji span)
+  _cellIconEls: new Map(),    // cellId -> HTMLImageElement
   _cellTierEls: new Map(),    // cellId -> HTMLElement (tier badge span)
   _lastRenderedCellState: new Map(), // cellId -> itemId + tier, for change detection
   _ctx: null,
@@ -75,7 +75,11 @@ export const GridView = {
 
     for (const cell of state.grid.cells) {
       const cellId = cell.cellId;
-      const iconEl = h('span', { class: 'grid-cell-icon' });
+      const iconEl = h('img', {
+        class: 'grid-cell-icon',
+        alt: '',
+        draggable: 'false',
+    });
       const tierEl = h('span', { class: 'grid-cell-tier' });
 
       const cellEl = h(
@@ -121,13 +125,21 @@ export const GridView = {
     if (!cellEl || !iconEl || !tierEl) return;
 
     if (!itemId) {
-      setText(iconEl, '');
+      iconEl.removeAttribute('src');
+      iconEl.alt = '';
       setText(tierEl, '');
       cellEl.setAttribute('aria-label', 'Empty grid cell');
       toggleClass(cellEl, 'has-item', false);
     } else {
       const def = getItemDefinition(itemId);
-      setText(iconEl, def?.emoji ?? '❓');
+
+      if (def?.iconAssetPath) {
+        iconEl.setAttribute('src', def.iconAssetPath);
+      } else {
+        iconEl.removeAttribute('src');
+      }
+
+      iconEl.alt = def?.displayName ?? 'Item';
       setText(tierEl, tier > 0 ? String(tier) : '');
       cellEl.setAttribute('aria-label', def?.displayName ?? 'Item');
       toggleClass(cellEl, 'has-item', true);
