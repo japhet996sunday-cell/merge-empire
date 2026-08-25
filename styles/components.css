@@ -121,9 +121,23 @@
 }
 
 .achievement-row-icon {
-  font-size: 1.5rem;
-  line-height: 1;
-  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.achievement-row-icon-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .achievement-row-progress-label,

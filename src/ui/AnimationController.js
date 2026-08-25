@@ -66,7 +66,10 @@ export const AnimationController = {
     eventBus.on('achievement:unlocked', async ({ achievementId }) => {
       const { getAchievementDefinition } = await import('../data/AchievementDefinitions.js');
       const def = getAchievementDefinition(achievementId);
-      this.playAchievementCelebration({ displayName: def?.displayName ?? 'Achievement Unlocked!' });
+      this.playAchievementCelebration({
+        displayName: def?.displayName ?? 'Achievement Unlocked!',
+        iconAssetPath: def?.iconAssetPath ?? 'assets/images/icons/achievement_secret.png',
+      });
     });
   },
 
@@ -117,12 +120,15 @@ export const AnimationController = {
    * achievement unlock. Uses a lightweight self-contained DOM node (not the
    * blocking Modal component) since unlocks shouldn't interrupt play.
    */
-  playAchievementCelebration({ displayName = 'Achievement Unlocked!' } = {}) {
+  playAchievementCelebration({
+    displayName = 'Achievement Unlocked!',
+    iconAssetPath = 'assets/images/icons/achievement_secret.png',
+  } = {}) {
     const banner = document.createElement('div');
     banner.className = 'achievement-banner';
     banner.setAttribute('role', 'status');
     banner.innerHTML = `
-      <span class="achievement-banner-icon">🏆</span>
+      <img class="achievement-banner-icon" src="${this._escapeHtml(iconAssetPath)}" alt="" aria-hidden="true">
       <span class="achievement-banner-text">${this._escapeHtml(displayName)}</span>
     `;
     document.body.appendChild(banner);

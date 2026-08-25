@@ -59,7 +59,14 @@ export const AchievementsScreen = {
         'div',
         { class: 'achievement-row', dataset: { achievementId: def.id } },
         [
-          h('span', { class: 'achievement-row-icon' }, unlocked ? '🏆' : '🔒'),
+          h('span', { class: 'achievement-row-icon' }, [
+            h('img', {
+              class: 'achievement-row-icon-image',
+              src: isRevealed ? def.iconAssetPath : 'assets/images/icons/achievement_secret.png',
+              alt: isRevealed ? def.displayName : 'Hidden achievement',
+              loading: 'lazy',
+            }),
+          ]),
           h('div', { class: 'achievement-row-info' }, [
             titleEl,
             descEl,
@@ -112,6 +119,19 @@ export const AchievementsScreen = {
     toggleClass(refs.row, 'is-locked', !unlocked);
 
     const iconEl = refs.row.querySelector('.achievement-row-icon');
-    if (iconEl) setText(iconEl, unlocked ? '🏆' : '🔒');
+    const iconImg = iconEl?.querySelector('.achievement-row-icon-image');
+
+    if (iconImg) {
+      iconImg.setAttribute(
+        'src',
+        isRevealed
+          ? def.iconAssetPath
+          : 'assets/images/icons/achievement_secret.png'
+      );
+      iconImg.setAttribute(
+        'alt',
+        isRevealed ? def.displayName : 'Hidden achievement'
+      );
+    }
   },
 };

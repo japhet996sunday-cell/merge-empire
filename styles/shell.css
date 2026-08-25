@@ -204,7 +204,11 @@
 }
 
 .achievement-banner-icon {
-  font-size: 1.1rem;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  object-fit: contain;
+  display: block;
 }
 
 /* ---- Settings modal ------------------------------------------------------------- */
