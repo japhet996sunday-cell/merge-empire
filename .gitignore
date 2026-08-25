@@ -1,0 +1,36 @@
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary / backup files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*~
+
+# Local development output
+dist/
+build/
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local test / profiling output
+benchmark-results/
+test-results/
+screenshots/
+
+# Python / tooling caches
+__pycache__/
+.pytest_cache/
+
+# Local save/test artifacts
+*.save

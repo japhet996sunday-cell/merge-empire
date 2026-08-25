@@ -12,7 +12,7 @@
  * ---------------------------------------------------------------------------
  */
 
-export const DEBUG_LOGGING_ENABLED = true;   // flip false for production
-export const DEBUG_PANEL_ENABLED = true;     // in-game cheat/inspector panel
+export const DEBUG_LOGGING_ENABLED = false;
+export const DEBUG_PANEL_ENABLED = false;
 export const SEASONAL_EVENTS_ENABLED = false; // gate future limited-time content
 export const CLOUD_SAVE_ENABLED = false;      // gate future account-sync feature

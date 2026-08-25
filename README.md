@@ -147,6 +147,9 @@ JSON backup of your save to the clipboard.
 
 ## License
 
-This is a project foundation intended for further development. No license
-has been chosen yet — add one appropriate to your intended use before
-distributing.
+Merge Empire is proprietary software.
+
+Copyright (c) 2026 Japhet Sunday. All rights reserved.
+
+See `LICENSE` for the applicable proprietary software terms. Third-party
+materials, if any, remain subject to their respective licenses.

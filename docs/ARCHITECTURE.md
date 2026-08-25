@@ -1,6 +1,6 @@
 # Merge Empire: Idle Tycoon — Architecture
 
-Status: **playable foundation**. Real content is authored and wired end to
+Status: **commercial-ready playable build**. Real content is authored and wired end to
 end — 3 item families, 5 upgrades, 9 achievements, 6 daily missions — and
 verified via both static import-graph checks and an executable runtime
 smoke test. This document explains how the pieces fit together so new
@@ -51,7 +51,7 @@ MergeSystem, EconomySystem, or AudioSystem at all — it just listens for
 | How data changes over app versions | `state/Migrations.js` | One function per schema version bump |
 | Reading derived values | `state/Selectors.js` | Never store what you can derive |
 | Gameplay rules | `systems/*.js` | Pure-ish, take `gameState` as an argument |
-| Content (numbers, names, chains) | `data/*Definitions.js` | Currently empty registries + schema docs |
+| Content (numbers, names, chains) | `data/*Definitions.js` | Authoritative game-content registries containing the shipped item, upgrade, achievement, and mission data. |
 | Engineering constants | `config/Constants.js` | Timing, storage keys — NOT balance numbers |
 | DOM rendering | `ui/*` | Never contains gameplay rules |
 | Cross-cutting reusable logic | `utils/*` | Pure functions, no state |
@@ -81,7 +81,7 @@ MergeSystem, EconomySystem, or AudioSystem at all — it just listens for
 Every `data/*Definitions.js` registry is populated with real content, and
 every system that reads it (`MergeSystem`, `ProductionSystem`,
 `UpgradeSystem`, `AchievementSystem`, `MissionSystem`) is fully wired
-against that data rather than stubbed:
+against the shipped game data:
 
 - **Items**: 3 merge families, 17 items total — `coin` (tiers 1–6, starts
   unlocked), `tree` (tiers 1–6), `gem` (tiers 1–5, premium currency).
@@ -147,9 +147,9 @@ screen.
 Natural next features, in rough priority order for a merge/idle tycoon's
 early retention loop:
 - A prestige/rebirth system (`BalanceConfig.prestigeConversionRate`
-  already exists as a placeholder constant for this).
+  is reserved for future expansion).
 - Push notifications or a service worker for offline-progress reminders.
-- A "sell item" action on grid cells (every item already has a
+- A future "sell item" action on grid cells (every item already has a
   `sellValue` in `ItemDefinitions`, just not wired to a UI action yet).
 - Expanding the item roster's tier ceiling once early-game pacing is
   tuned against real playtesting data.
