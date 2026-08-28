@@ -41,8 +41,41 @@ export function getAllItemDefinitions() {
   return [...ITEM_REGISTRY.values()];
 }
 
+/**
+ * Returns tier-1 items whose families are currently available to the player.
+ *
+ * Launch progression:
+ *   - coin is available from the beginning
+ *   - tree unlocks when the player reaches coin tier 3
+ *   - gem unlocks when the player reaches coin tier 6
+ *
+ * Unlocks are derived from lifetime statistics rather than persisted
+ * separately, so existing saves remain compatible without a schema migration.
+ */
+export function getUnlockedFamilyStarterItems(state) {
+  const highestTierReached = state?.statistics?.highestTierReached ?? 0;
+
+  return getAllItemDefinitions().filter((def) => {
+    if (def.tier !== 1) return false;
+
+    switch (def.familyId) {
+      case 'coin':
+        return true;
+      case 'tree':
+        return highestTierReached >= 3;
+      case 'gem':
+        return highestTierReached >= 6;
+      default:
+        return def.unlockedFromStart === true;
+    }
+  });
+}
+
+// Backward-compatible helper for callers that only need starting content.
 export function getFamilyStarterItems() {
-  return getAllItemDefinitions().filter((def) => def.unlockedFromStart && def.tier === 1);
+  return getAllItemDefinitions().filter(
+    (def) => def.unlockedFromStart && def.tier === 1
+  );
 }
 
 // ---------------------------------------------------------------------------

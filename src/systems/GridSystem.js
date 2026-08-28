@@ -29,7 +29,7 @@
 
 import { eventBus } from '../core/EventBus.js';
 import { Selectors } from '../state/Selectors.js';
-import { getFamilyStarterItems } from '../data/ItemDefinitions.js';
+import { getUnlockedFamilyStarterItems } from '../data/ItemDefinitions.js';
 
 export const GridSystem = {
   isCellEmpty(state, cellId) {
@@ -98,7 +98,7 @@ export const GridSystem = {
       return null;
     }
 
-    const starterItems = getFamilyStarterItems();
+    const starterItems = getUnlockedFamilyStarterItems(state);
     if (starterItems.length === 0) return null; // no content registered yet
 
     const chosenDef = starterItems[Math.floor(Math.random() * starterItems.length)];

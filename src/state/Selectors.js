@@ -49,6 +49,8 @@ export const Selectors = {
   },
 
   getEmptyCellCount(state) {
-    return state.grid.cells.filter((c) => c === null).length;
+    return state.grid.cells.filter(
+      (c) => c === null || c.itemId === null
+    ).length;
   },
 };
