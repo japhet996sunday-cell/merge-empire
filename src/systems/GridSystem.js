@@ -42,11 +42,14 @@ export const GridSystem = {
    */
   placeItem(gameState, cellId, itemDefId, tier) {
     const state = gameState.getState();
+    const index = state.grid.cells.findIndex((c) => c?.cellId === cellId);
+
+    if (index < 0) return false;
+    if (!itemDefId || !Number.isInteger(tier) || tier < 1) return false;
     if (!this.isCellEmpty(state, cellId)) return false;
 
     gameState.update((draft) => {
-      const idx = draft.grid.cells.findIndex((c) => c?.cellId === cellId);
-      draft.grid.cells[idx] = { cellId, itemId: itemDefId, tier };
+      draft.grid.cells[index] = { cellId, itemId: itemDefId, tier };
     }, 'grid:place');
 
     eventBus.emit('grid:itemPlaced', { cellId, itemDefId, tier });
@@ -54,15 +57,26 @@ export const GridSystem = {
   },
 
   moveItem(gameState, fromCellId, toCellId) {
+    if (fromCellId === toCellId) return false;
+
     const state = gameState.getState();
+    const from = Selectors.getGridCell(state, fromCellId);
+    const to = Selectors.getGridCell(state, toCellId);
+
+    if (!from || !from.itemId) return false;
+    if (!to) return false;
     if (!this.isCellEmpty(state, toCellId)) return false;
 
     gameState.update((draft) => {
-      const from = draft.grid.cells.find((c) => c?.cellId === fromCellId);
-      const toIdx = draft.grid.cells.findIndex((c) => c?.cellId === toCellId);
-      draft.grid.cells[toIdx] = { cellId: toCellId, itemId: from.itemId, tier: from.tier };
-      from.itemId = null;
-      from.tier = 0;
+      const source = draft.grid.cells.find((c) => c?.cellId === fromCellId);
+      const target = draft.grid.cells.find((c) => c?.cellId === toCellId);
+
+      if (!source || !target) return;
+
+      target.itemId = source.itemId;
+      target.tier = source.tier;
+      source.itemId = null;
+      source.tier = 0;
     }, 'grid:move');
 
     eventBus.emit('grid:itemMoved', { fromCellId, toCellId });
@@ -99,12 +113,38 @@ export const GridSystem = {
     }
 
     const starterItems = getUnlockedFamilyStarterItems(state);
-    if (starterItems.length === 0) return null; // no content registered yet
+    if (starterItems.length === 0) return null;
 
-    const chosenDef = starterItems[Math.floor(Math.random() * starterItems.length)];
+    // Keep the early game focused on the core coin chain.
+    // Newly unlocked families are discoveries, not constant noise.
+    const weighted = [];
+
+    for (const def of starterItems) {
+      const weight =
+        def.familyId === 'coin' ? 10 :
+        def.familyId === 'tree' ? 3 :
+        def.familyId === 'gem' ? 1 :
+        1;
+
+      for (let i = 0; i < weight; i++) weighted.push(def);
+    }
+
+    const chosenDef = weighted[Math.floor(Math.random() * weighted.length)];
     const targetCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
 
-    this.placeItem(gameState, targetCell.cellId, chosenDef.id, chosenDef.tier);
-    return { cellId: targetCell.cellId, itemDefId: chosenDef.id, tier: chosenDef.tier };
+    const placed = this.placeItem(
+      gameState,
+      targetCell.cellId,
+      chosenDef.id,
+      chosenDef.tier
+    );
+
+    if (!placed) return null;
+
+    return {
+      cellId: targetCell.cellId,
+      itemDefId: chosenDef.id,
+      tier: chosenDef.tier
+    };
   },
 };

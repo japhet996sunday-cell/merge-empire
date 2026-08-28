@@ -80,3 +80,66 @@
     animation-duration: 0.01ms !important;
   }
   }
+
+
+/* ============================================================
+   MERGE EMPIRE — GAME FEEL
+   ============================================================ */
+
+.grid-cell {
+  transform-origin: center;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.grid-cell.has-item {
+  transition:
+    transform 120ms ease,
+    filter 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.grid-cell.has-item:active {
+  transform: scale(.94);
+}
+
+.grid-cell.is-selected {
+  transform: scale(1.045);
+  filter: brightness(1.10) saturate(1.08);
+  box-shadow:
+    0 0 0 2px var(--color-accent-gold),
+    0 0 18px color-mix(in srgb, var(--color-accent-gold) 42%, transparent);
+  z-index: 2;
+}
+
+.grid-cell.is-selected .grid-cell-icon {
+  animation: merge-selected-pulse 850ms ease-in-out infinite;
+}
+
+.merge-burst {
+  position: fixed;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  border: 3px solid var(--color-accent-gold);
+  box-shadow:
+    0 0 12px var(--color-accent-gold),
+    inset 0 0 8px var(--color-accent-gold);
+}
+
+@keyframes merge-selected-pulse {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid-cell.is-selected .grid-cell-icon {
+    animation: none;
+  }
+}

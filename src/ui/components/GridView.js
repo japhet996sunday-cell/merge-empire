@@ -158,7 +158,16 @@ export const GridView = {
 
     if (!this._selectedCellId) {
       this._selectedCellId = cellId;
-      toggleClass(this._cellEls.get(cellId), 'is-selected', true);
+      const selectedEl = this._cellEls.get(cellId);
+      toggleClass(selectedEl, 'is-selected', true);
+      selectedEl?.animate(
+        [
+          { transform: 'scale(1)' },
+          { transform: 'scale(1.07)' },
+          { transform: 'scale(1)' }
+        ],
+        { duration: 140, easing: 'ease-out' }
+      );
       return;
     }
 
@@ -169,8 +178,29 @@ export const GridView = {
     }
 
     const previousSelection = this._selectedCellId;
-    systems.mergeSystem.attemptMerge(gameState, previousSelection, cellId);
-    toggleClass(this._cellEls.get(previousSelection), 'is-selected', false);
+    const sourceEl = this._cellEls.get(previousSelection);
+    const targetEl = this._cellEls.get(cellId);
+
+    const merged = systems.mergeSystem.attemptMerge(
+      gameState,
+      previousSelection,
+      cellId
+    );
+
+    toggleClass(sourceEl, 'is-selected', false);
     this._selectedCellId = null;
+
+    if (!merged) {
+      targetEl?.animate(
+        [
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-4px)' },
+          { transform: 'translateX(4px)' },
+          { transform: 'translateX(-3px)' },
+          { transform: 'translateX(0)' }
+        ],
+        { duration: 180, easing: 'ease-out' }
+      );
+    }
   },
 };

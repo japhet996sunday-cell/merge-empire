@@ -81,3 +81,11 @@
     gap: var(--space-3);
   }
     }
+
+
+/* Mobile gameplay input should feel immediate, not like form controls. */
+.grid-cell {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}

@@ -24,8 +24,8 @@
 
 import { EconomySystem } from './EconomySystem.js';
 import { getItemDefinition } from '../data/ItemDefinitions.js';
-import { BalanceConfig } from '../data/BalanceConfig.js';
-import { UpgradeSystem } from './UpgradeSystem.js';
+
+
 
 export const ProductionSystem = {
   /**
@@ -41,15 +41,13 @@ export const ProductionSystem = {
       const def = getItemDefinition(cell.itemId);
       if (!def || !def.producesCurrency) continue;
 
-      const tierMultiplier = Math.pow(BalanceConfig.tierValueGrowth, def.tier - 1);
-      const upgradeMultiplier = UpgradeSystem.getCurrencyMultiplier(
-        state,
-        def.producesCurrency
-      );
-      const rate =
-        def.baseProductionRate *
-        tierMultiplier *
-        upgradeMultiplier;
+      // baseProductionRate is already tier-specific in
+      // ItemDefinitions. Do not multiply by tierValueGrowth again.
+      //
+      // Currency upgrades are intentionally NOT applied here.
+      // EconomySystem is the single currency mutation point and
+      // applies those multipliers exactly once.
+      const rate = def.baseProductionRate;
 
       snapshot[def.producesCurrency] = (snapshot[def.producesCurrency] ?? 0) + rate;
     }

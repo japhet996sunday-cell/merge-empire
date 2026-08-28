@@ -152,10 +152,9 @@ export const AudioSystem = {
 
   _wireEventReactions() {
     eventBus.on('merge:completed', ({ resultTier }) => {
-      // Pitch rises slightly with tier so higher merges feel more rewarding.
-      const pitchBoost = Math.min(resultTier - 1, 5) * 30;
-      this.playSfx('merge', { volume: 1 });
-      void pitchBoost; // reserved for future per-tier pitch shifting
+      const tier = Math.max(1, Number(resultTier) || 1);
+      const volume = Math.min(1.15, 0.88 + tier * 0.045);
+      this.playSfx('merge', { volume });
     });
     eventBus.on('merge:maxTierReached', () => this.playSfx('maxTier'));
     eventBus.on('achievement:unlocked', () => this.playSfx('achievement'));

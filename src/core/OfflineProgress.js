@@ -43,7 +43,8 @@ import { OFFLINE_PROGRESS_CAP_HOURS, OFFLINE_EFFICIENCY } from '../config/Consta
  */
 export function calculateOfflineProgress({ elapsedMs, productionSnapshot }) {
   const capMs = OFFLINE_PROGRESS_CAP_HOURS * 60 * 60 * 1000;
-  const cappedMs = Math.min(elapsedMs, capMs);
+  const safeElapsedMs = Math.max(0, Number(elapsedMs) || 0);
+  const cappedMs = Math.min(safeElapsedMs, capMs);
   const cappedSeconds = cappedMs / 1000;
 
   const earned = {};

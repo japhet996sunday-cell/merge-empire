@@ -79,20 +79,57 @@ export const AnimationController = {
     return stateReduced || osReduced;
   },
 
-  playMergeEffect(resultCellId, _resultTier) {
+  playMergeEffect(resultCellId, resultTier) {
     const targetEl = document.querySelector(`[data-cell-id="${resultCellId}"]`);
     if (!targetEl) return;
 
-    if (this.respectsReducedMotion()) return; // skip flourish, keep instant feedback only
+    if (this.respectsReducedMotion()) return;
+
+    const intensity = Math.min(Math.max(resultTier, 1), 6);
+    const overshoot = 1.10 + intensity * 0.012;
 
     targetEl.animate(
       [
-        { transform: 'scale(0.85)', offset: 0 },
-        { transform: 'scale(1.15)', offset: 0.5 },
-        { transform: 'scale(1)', offset: 1 },
+        { transform: 'scale(0.72)', opacity: 0.72, offset: 0 },
+        { transform: `scale(${overshoot})`, opacity: 1, offset: 0.42 },
+        { transform: 'scale(0.96)', opacity: 1, offset: 0.68 },
+        { transform: 'scale(1)', opacity: 1, offset: 1 }
       ],
-      { duration: 260, easing: 'ease-out' }
+      {
+        duration: 360,
+        easing: 'cubic-bezier(.2,.9,.25,1)'
+      }
     );
+
+    targetEl.animate(
+      [
+        { boxShadow: '0 0 0 0 transparent' },
+        { boxShadow: '0 0 0 10px color-mix(in srgb, var(--color-accent-gold) 22%, transparent)' },
+        { boxShadow: '0 0 0 0 transparent' }
+      ],
+      { duration: 420, easing: 'ease-out' }
+    );
+
+    const rect = targetEl.getBoundingClientRect();
+    const burst = document.createElement('div');
+    burst.className = 'merge-burst';
+    burst.style.left = `${rect.left + rect.width / 2}px`;
+    burst.style.top = `${rect.top + rect.height / 2}px`;
+    burst.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(burst);
+
+    const burstAnimation = burst.animate(
+      [
+        { transform: 'translate(-50%, -50%) scale(.4)', opacity: 0 },
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1, offset: .25 },
+        { transform: 'translate(-50%, -50%) scale(1.55)', opacity: 0 }
+      ],
+      { duration: 430, easing: 'ease-out' }
+    );
+
+    burstAnimation.finished
+      .then(() => burst.remove())
+      .catch(() => burst.remove());
   },
 
   playFloatingText(anchorEl, text, { color = 'var(--color-accent-gold)' } = {}) {

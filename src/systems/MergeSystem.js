@@ -67,6 +67,8 @@ export const MergeSystem = {
     const sourceCell = Selectors.getGridCell(state, cellIdA);
     const resultDef = getNextTierItem(sourceCell.itemId);
 
+    if (!resultDef) return null;
+
     let result = null;
     gameState.update((draft) => {
       const cellA = draft.grid.cells.find((c) => c?.cellId === cellIdA);
@@ -98,6 +100,12 @@ export const MergeSystem = {
       };
     }, 'merge');
 
+    eventBus.emit('merge:impact', {
+      sourceCellId: cellIdA,
+      targetCellId: cellIdB,
+      resultCellId: cellIdA,
+      resultTier: resultDef.tier
+    });
     eventBus.emit('merge:completed', result);
     if (result.isMaxTier) {
       eventBus.emit('merge:maxTierReached', {

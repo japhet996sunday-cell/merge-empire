@@ -67,17 +67,43 @@ export class SaveManager {
    * @returns {{ data: object, lastSavedAtMs: number } | null}
    */
   load() {
-    const raw = this.#readKey(SAVE_KEY) ?? this.#readKey(SAVE_BACKUP_KEY);
-    if (!raw) return null;
+    const candidates = [
+      { key: SAVE_KEY, raw: this.#readKey(SAVE_KEY) },
+      { key: SAVE_BACKUP_KEY, raw: this.#readKey(SAVE_BACKUP_KEY) },
+    ];
 
-    try {
-      const parsed = JSON.parse(raw);
-      const migrated = runMigrations(parsed, parsed.schemaVersion ?? 0, CURRENT_SCHEMA_VERSION);
-      return { data: migrated, lastSavedAtMs: parsed.lastSavedAtMs ?? Date.now() };
-    } catch (err) {
-      Logger.error('SaveManager', 'Failed to parse save; starting fresh.', err);
-      return null;
+    for (const candidate of candidates) {
+      if (!candidate.raw) continue;
+
+      try {
+        const parsed = JSON.parse(candidate.raw);
+        const migrated = runMigrations(
+          parsed,
+          parsed.schemaVersion ?? 0,
+          CURRENT_SCHEMA_VERSION
+        );
+
+        if (candidate.key === SAVE_BACKUP_KEY) {
+          Logger.warn(
+            'SaveManager',
+            'Primary save was unavailable; recovered from backup.'
+          );
+        }
+
+        return {
+          data: migrated,
+          lastSavedAtMs: parsed.lastSavedAtMs ?? Date.now()
+        };
+      } catch (err) {
+        Logger.error(
+          'SaveManager',
+          `Failed to parse ${candidate.key}; trying recovery slot.`,
+          err
+        );
+      }
     }
+
+    return null;
   }
 
   /** Immediate, synchronous save. Used on unload/hide — must not be async. */

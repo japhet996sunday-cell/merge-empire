@@ -38,9 +38,22 @@ export const AchievementSystem = {
   init(gameState) {
     const recheck = () => this._recheckAll(gameState);
     eventBus.on('merge:completed', recheck);
-    eventBus.on('currency:changed', recheck);
     eventBus.on('upgrade:purchased', recheck);
     eventBus.on('mission:claimed', recheck);
+
+    // Idle production can emit currency:changed 20 times per second.
+    // Achievements should react to meaningful state changes without
+    // forcing a complete registry scan on every simulation tick.
+    let currencyCheckQueued = false;
+    eventBus.on('currency:changed', () => {
+      if (currencyCheckQueued) return;
+      currencyCheckQueued = true;
+
+      queueMicrotask(() => {
+        currencyCheckQueued = false;
+        recheck();
+      });
+    });
 
     // Catch anything already true from a loaded save (e.g. imported save
     // file that already qualifies for an achievement never granted).
