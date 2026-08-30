@@ -103,7 +103,7 @@ export const MergeSystem = {
     eventBus.emit('merge:impact', {
       sourceCellId: cellIdA,
       targetCellId: cellIdB,
-      resultCellId: cellIdA,
+      resultCellId: cellIdB,
       resultTier: resultDef.tier
     });
     eventBus.emit('merge:completed', result);
