@@ -110,6 +110,10 @@ export const UpgradeSystem = {
         return level * def.effectParams.perLevelBonus;
       case 'gridExpansion':
         return level * def.effectParams.extraRowsPerLevel;
+      case 'missionRewardMultiplier':
+        return 1 + level * def.effectParams.perLevelBonus;
+      case 'dailyRewardMultiplier':
+        return 1 + level * def.effectParams.perLevelBonus;
       default:
         return level;
     }

@@ -105,7 +105,16 @@ export const MissionSystem = {
     }, `mission:claim:${missionId}`);
 
     if (def.rewardCurrency && def.rewardAmount > 0) {
-      EconomySystem.grantCurrency(gameState, def.rewardCurrency, def.rewardAmount, `mission:${missionId}`);
+      const rewardMultiplier = gameState.getState().upgrades?.mission_reward_boost?.level
+        ? 1 + gameState.getState().upgrades.mission_reward_boost.level * 0.15
+        : 1;
+
+      EconomySystem.grantCurrency(
+        gameState,
+        def.rewardCurrency,
+        def.rewardAmount * rewardMultiplier,
+        `mission:${missionId}`
+      );
     }
 
     eventBus.emit('mission:claimed', {

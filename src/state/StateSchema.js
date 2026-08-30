@@ -96,6 +96,9 @@ export function createDefaultState() {
       active: [],
       completedIds: [],
       lastDailyResetAtMs: Date.now(),
+      loginStreak: 0,
+      lastLoginRewardAtMs: 0,
+      lastOfflineClaimAtMs: 0,
     },
     settings: {
       audioMasterVolume: 0.8,

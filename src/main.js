@@ -59,6 +59,7 @@ import { LoadingScreen } from './ui/components/LoadingScreen.js';
 import { Modal } from './ui/components/Modal.js';
 import { h } from './ui/Renderer.js';
 import { NumberFormatter } from './utils/NumberFormatter.js';
+import { DailyRewardSystem } from './systems/DailyRewardSystem.js';
 
 const DAILY_RESET_CHECK_INTERVAL_MS = 60_000; // check once a minute is plenty
 
@@ -124,6 +125,7 @@ async function boot() {
   LoadingScreen.setProgress(loadingEl, 0.65, 'Waking up your merchants...');
   AchievementSystem.init(gameState);
   MissionSystem.init(gameState);
+  DailyRewardSystem.init(gameState);
 
   // --- 7. Build the app shell ----------------------------------------------------
   LoadingScreen.setProgress(loadingEl, 0.8, 'Building your board...');

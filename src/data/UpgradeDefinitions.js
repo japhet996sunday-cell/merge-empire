@@ -78,6 +78,30 @@ registerUpgradeDefinition({
 });
 
 registerUpgradeDefinition({
+  id: 'mission_reward_boost',
+  displayName: 'Mission Rewards',
+  description: 'Increases mission rewards by 15% per level.',
+  maxLevel: 10,
+  costCurrency: 'gold',
+  baseCost: 150,
+  growthRate: 1.35,
+  effectType: 'missionRewardMultiplier',
+  effectParams: { perLevelBonus: 0.15 },
+});
+
+registerUpgradeDefinition({
+  id: 'daily_bonus',
+  displayName: 'Daily Bonus',
+  description: 'Increases daily login rewards by 10% per level.',
+  maxLevel: 10,
+  costCurrency: 'gems',
+  baseCost: 15,
+  growthRate: 1.4,
+  effectType: 'dailyRewardMultiplier',
+  effectParams: { perLevelBonus: 0.10 },
+});
+
+registerUpgradeDefinition({
   id: 'offline_efficiency',
   displayName: 'Offline Efficiency',
   description: 'Increases offline earnings efficiency by 5% per level.',
